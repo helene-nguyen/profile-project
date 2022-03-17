@@ -20,6 +20,7 @@ const app = {
         'Alcmène',
         'Déjanire'
     ],
+    essai: function(){console.log(base)},
 
     //^INIT
     init: function () {
