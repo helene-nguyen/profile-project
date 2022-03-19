@@ -20,7 +20,9 @@ const app = {
         'Alcmène',
         'Déjanire'
     ],
-    essai: function(){console.log(base)},
+    essai: function () {
+        console.log(base)
+    },
 
     //^INIT
     init: function () {
@@ -65,10 +67,11 @@ const app = {
     },
     //~get pseudo
     getPseudo: function (name, department) {
+        /* CORRECTION PAS BESOIN DE FAIRE DES VAR
         let addName = name;
-        let addDepartment = department;
+        let addDepartment = department; */
 
-        let getPseudo = `${addName}-du-${addDepartment}`;
+        let getPseudo = `${name}-du-${department}`;
 
         return getPseudo;
     },
@@ -84,11 +87,15 @@ const app = {
         let getMenuBtn = document.querySelector('#menu-toggler');
 
         getMenuBtn.addEventListener('click', (event) => {
+
+            app.headerBanner.classList.toggle('banner--open');
+
+            /* CORRECTION NO NEED IF ELSE HERE
             if (app.headerBanner.classList.contains('banner--open')) {
                 app.headerBanner.classList.remove('banner--open');
             } else {
                 app.headerBanner.classList.add('banner--open')
-            }
+            } */
         })
     },
     //~form submit
@@ -106,10 +113,11 @@ const app = {
         let voteHercule = Math.round(this.average(base.vote.hercule, app.totalVote)) + '%';
 
         //popularity
-        let addHerculePop = document.querySelector('#trends-hercule').querySelector('.people__popularity');
+        let addHerculePop = document.querySelector('#trends-hercule .people__popularity');
+        //! can put 2 selectors in one
         addHerculePop.textContent = voteHercule;
         //progres bar
-        let addProgressBar = document.querySelector('#trends-hercule').querySelector('.people__bar');
+        let addProgressBar = document.querySelector('#trends-hercule .people__bar');
         addProgressBar.style.width = voteHercule;
 
         return voteHercule;
@@ -119,10 +127,10 @@ const app = {
         let voteCesar = Math.round(this.average(base.vote.cesar, app.totalVote)) + '%';
 
         //popularity
-        let addCesarPop = document.querySelector('#trends-cesar').querySelector('.people__popularity');
+        let addCesarPop = document.querySelector('#trends-cesar .people__popularity');
         addCesarPop.textContent = voteCesar;
         //progress bar
-        let addProgressBar = document.querySelector('#trends-cesar').querySelector('.people__bar');
+        let addProgressBar = document.querySelector('#trends-cesar .people__bar');
         addProgressBar.style.width = voteCesar;
 
         return voteCesar;
@@ -133,31 +141,60 @@ const app = {
         return getAverage;
     },
     //~activities
-    activitiesTask: function(){
+    activitiesTask: function () {
         let activitiesElement = document.querySelector('#activities');
         activitiesElement.classList.remove('hidden');
 
         let tasksToDo = this.tasks(false, app.activitiesArray);
-        
+
         app.addTask(tasksToDo);
+        app.taskDone();
+
     },
     //~add task
-    addTask: function(task) {
+    addTask: function (task) {
         let getTaskList = document.querySelector('#activities').querySelector('ul');
         let createTask = document.createElement('li');
         getTaskList.appendChild(createTask);
 
-        createTask.textContent = task;
+        createTask.textContent = "A rédiger : " + task;
     },
     //~tasks not finished
-    tasks: function(key, inputArray){
-        for(let i = 0; i < inputArray.length; i++) {
-            if(inputArray[i].finished === key) {
+    tasks: function (key, inputArray) {
+        for (let i = 0; i < inputArray.length; i++) {
+            if (inputArray[i].finished === key) {
                 return inputArray[i].title;
             }
         }
+    },
+    //~finished tasks
+    getFinishedActivitiesTitle: function () {
+        const currentUserName = app.person.name;
+        const activitiesTitle = [];
+
+        for (const activity of base.activities) {
+            if (activity.author === currentUserName && activity.finished) {
+                activitiesTitle.push(activity.title);
+            }
+        }
+
+        return activitiesTitle; // Il aurait fallu ensuite boucler sur ce tableau afin d'ajouter un li pour chaque titre
+    },
+    taskDone: function () {
+        let getTaskList = document.querySelector('#activities').querySelector('ul');
+
+        let tasksFinished = app.getFinishedActivitiesTitle();
+
+        for (let x = 0; x < tasksFinished.length; x++) {
+            let createTask = document.createElement('li');
+            getTaskList.appendChild(createTask);
+            createTask.textContent = "Articles terminés : " + tasksFinished[x];
+        }
     }
+
 }
+
+
 
 
 //^PLAY THE GAME =)

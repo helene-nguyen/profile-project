@@ -4,6 +4,10 @@ body {
   line-height: 1.4;
 }
 
+/* li {
+  padding: 1em 0;
+} */
+
 .hidden {
   display: none;
 }
